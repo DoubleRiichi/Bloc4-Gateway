@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 
 	bloc4_config "github.com/DoubleRiichi/BLOC4-Gateway/internal/config"
+	bloc4_network "github.com/DoubleRiichi/BLOC4-Gateway/internal/network"
 )
 
 func main() {
@@ -16,12 +16,26 @@ func main() {
 		os.Exit(1)
 	}
 
-	bloc_server := bloc4_config.ConfigIntoServer(config)
+	states, err := bloc4_network.GetAPIsStatus(config)
 
-	http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
-	})
-	bloc_server.ListenAndServe()
+	server := bloc4_config.ConfigIntoServer(config)
+
+	for _, state := range states {
+		fmt.Printf("%v : %v\n", state.Api.Host, state.Status)
+
+		if state.Status == bloc4_network.UP {
+			bloc4_network.ConstructSubdomainRoute(state.Api)
+		}
+	}
 
 	fmt.Printf("%+v\n", config)
+
+	server.ListenAndServe()
+	fmt.Printf("Listening on " + server.Addr + "...")
+
 }

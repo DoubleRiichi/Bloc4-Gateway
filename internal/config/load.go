@@ -9,13 +9,13 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
+//Todo: ADD VALIDATION SCHEMES FOR DIFFERENT CONFIG TYPES
+
 /*
 * This code responsability is threefold, search for the appropriate config files, read them, and load them into structures that represent various configs.
 * As outlined in types.go, config files should be located within the "/config" subfolder, available from the current working directory
 * /config/API/ hold the different API config files
-*
  */
-
 func ConfigIntoServer(config Config) *http.Server {
 	var s http.Server
 	s.Addr = config.Server.Host + ":" + config.Server.Port
@@ -33,6 +33,7 @@ func ConfigIntoServer(config Config) *http.Server {
 	return &s
 }
 
+// Should add validation of configuration
 func Load() (Config, error) {
 	var config Config
 
@@ -57,7 +58,7 @@ func Load() (Config, error) {
 
 		switch v.kind {
 		case cAPI:
-			var api_config apiCnf
+			var api_config ApiCnf
 
 			if err := yamlDecoder.Decode(&api_config); err != nil {
 				return config, fmt.Errorf("error trying to parse %v :\n %w", v.path, err)
@@ -65,7 +66,7 @@ func Load() (Config, error) {
 			config.Apis = append(config.Apis, api_config)
 
 		case cSERVER:
-			var server_config serverCnf
+			var server_config ServerCnf
 
 			if err := yamlDecoder.Decode(&server_config); err != nil {
 				return config, fmt.Errorf("error trying to parse %v :\n %w", v.path, err)

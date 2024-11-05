@@ -3,7 +3,7 @@ package bloc4_config
 func GetDefaultConfig() Config {
 
 	return Config{
-		Server: serverCnf{
+		Server: ServerCnf{
 			Host:              "127.0.0.1",
 			Port:              "8080",
 			Https:             false,
