@@ -1,6 +1,6 @@
 package bloc4_config
 
-type serverCnf struct {
+type ServerCnf struct {
 	Host              string `yaml:"host"`
 	Port              string `yaml:"port"`
 	Https             bool   `yaml:"https"`
@@ -13,19 +13,20 @@ type serverCnf struct {
 	// MaxConnections    int    `yaml:"MaxConnections"`
 }
 
-type apiCnf struct {
+type ApiCnf struct {
 	Host            string `yaml:"host"`
 	Port            string `yaml:"port"`
 	GatewayName     string `yaml:"gatewayName"`
 	NeedAuth        bool   `yaml:"needAuth"`
 	AuthType        string `yaml:"authType"`
 	Description     string `yaml:"description"`
+	Protocol        string `yaml:"protocol"`
 	GlobalRateLimit int64  `yaml:"globalRateLimit"`
 }
 
 type Config struct {
-	Server serverCnf
-	Apis   []apiCnf
+	Server ServerCnf
+	Apis   []ApiCnf
 }
 
 type configType int
