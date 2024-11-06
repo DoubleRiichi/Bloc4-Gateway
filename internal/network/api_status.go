@@ -1,7 +1,6 @@
 package bloc4_network
 
 import (
-	"fmt"
 	"net"
 	"time"
 
@@ -38,10 +37,10 @@ func PingAPI(api bloc4_config.ApiCnf) ApiState {
 }
 
 func GetAPIsStatus(config bloc4_config.Config) ([]ApiState, error) {
-
-	if len(config.Apis) == 0 {
-		return nil, fmt.Errorf("no API configuration found")
-	}
+	// The check should be handled somewhere else, to keep concerns separate
+	// if len(config.Apis) == 0 {
+	// 	return nil, fmt.Errorf("no API configuration found")
+	// }
 
 	var states []ApiState
 
