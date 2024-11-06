@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	bloc4_config "github.com/DoubleRiichi/BLOC4-Gateway/internal/config"
+	"github.com/DoubleRiichi/BLOC4-Gateway/middleware/fingerprinting"
 )
 
 // Wrap a given api config in order to access its values within the general Handler
@@ -24,6 +25,10 @@ func (api *ApiHandler) simpleHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	//debug
+	fingerprint := fingerprinting.FingerprintClient(r)
+	fmt.Printf("requester fingerprint %x \n", fingerprint)
 
 	//this might not be needed actually lmao
 	url_right := strings.Split(r.URL.RequestURI(), "/"+api.config.GatewayName+"/")[1]
